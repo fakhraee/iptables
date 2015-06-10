@@ -1,0 +1,9 @@
+## Howto
+1. Make a backup of current rules using iptables-save.
+2. Use "rules.v4.fakhraee" to add/remove/modify what you want. Remeber to read comments and use them as much as you should.
+3. iptables-restore the rules.v4.fakhraee.
+4. Run "fwsnort" and check "/etc/fwsnort/fwsnort.save" for your rules to be there.
+5. Run "/etc/fwsnort/fwsnort.sh".
+
+## TODO
+1. Someday there may be a script to do above works.
