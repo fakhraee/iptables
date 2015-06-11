@@ -44,9 +44,10 @@ COMMIT
 # Free all
 #-A INPUT -j ACCEPT
 # Whitelist
--A INPUT -s 178.236.34.0/24 -j ACCEPT
 -A INPUT -s 10.9.27.0/24 -j ACCEPT
 -A INPUT -s 10.56.212.0/24 -j ACCEPT
+-A INPUT -s 178.236.34.177/28 -j ACCEPT
+-A INPUT -s 178.236.32.177/28 -j ACCEPT
 #
 -A INPUT -p udp -m udp --dport 2000 -j ACCEPT
 -A INPUT -p udp -m udp --dport 161 -j ACCEPT
