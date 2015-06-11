@@ -31,39 +31,22 @@ COMMIT
 :OUTPUT ACCEPT [221525:118751913]
 :fail2ban-SSH - [0:0]
 :fail2ban-ssh - [0:0]
-# Door
-#-A INPUT -j ACCEPT
-#
--A INPUT -s 10.9.27.250/32 -p tcp -m tcp --dport 22 -j ACCEPT
+
 ## BEGIN: Some general dropping
-#
 -A INPUT -m state --state INVALID -j DROP
-#
 -A INPUT -p tcp -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -m state --state NEW -j DROP
-#
 -A INPUT -f -j DROP
-#
 -A INPUT -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,SYN,RST,PSH,ACK,URG -j DROP
 -A INPUT -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG NONE -j DROP
 ## END: Some general dropping
-## BEGIN: UDP
-# DNS bad string
--A INPUT -p udp -m udp --dport 53 -m string --string "mrcp8" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "xinleduo" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "cp361" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "example" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "227x" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "taohuazu" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "77777av" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "facebook" --algo kmp --to 65535 -j DROP
-# DNS IP whitelist 
--A INPUT -p udp -m udp --dport 53 -s 10.9.27.0/24 -j ACCEPT
--A INPUT -p udp -m udp --dport 53 -s 10.56.212.0/24 -j ACCEPT
-# DNS name whitelist
--A INPUT -p udp -m udp --dport 53 -m string --string "10d" --algo kmp --to 65535 -j ACCEPT
--A INPUT -p udp -m udp --dport 53 -m string --string "dahdi" --algo kmp --to 65535 -j ACCEPT
-#
--A INPUT -p udp -m udp --dport 53 -j DROP
+
+## BEGIN: The door
+# Free all
+#-A INPUT -j ACCEPT
+# Whitelist
+-A INPUT -s 178.236.34.0/24 -j ACCEPT
+-A INPUT -s 10.9.27.0/24 -j ACCEPT
+-A INPUT -s 10.56.212.0/24 -j ACCEPT
 #
 -A INPUT -p udp -m udp --dport 2000 -j ACCEPT
 -A INPUT -p udp -m udp --dport 161 -j ACCEPT
@@ -73,7 +56,27 @@ COMMIT
 -A INPUT -p udp -m udp --dport 4569 -j ACCEPT
 -A INPUT -p udp -m udp --dport 10050 -j ACCEPT
 -A INPUT -p udp -m udp --dport 123 -j ACCEPT
+## END: The door
+
+## BEGIN: UDP
+# DNS bad string
+-A INPUT -p udp -m udp --dport 53 -m string --string "mren8" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "mrcp8" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "xinleduo" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "cp361" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "example" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "227x" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "taohuazu" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "77777av" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "facebook" --algo kmp --to 65535 -j DROP
+# DNS IP whitelist 
+# DNS name whitelist
+-A INPUT -p udp -m udp --dport 53 -m string --string "10d" --algo kmp --to 65535 -j ACCEPT
+-A INPUT -p udp -m udp --dport 53 -m string --string "dahdi" --algo kmp --to 65535 -j ACCEPT
+#
+-A INPUT -p udp -m udp --dport 53 -j DROP
 ## END UDP
+
 # fail2ban
 -A INPUT -p tcp -m tcp --dport 22 -j fail2ban-SSH
 -A INPUT -p tcp -m multiport --dports 22 -j fail2ban-ssh
@@ -94,19 +97,19 @@ COMMIT
 -A INPUT -s 10.9.27.240/28 -p tcp -m state --state NEW -m tcp --dport 25 -j ACCEPT
 -A INPUT -s 178.236.34.176/28 -p tcp -m state --state NEW -m tcp --dport 25 -j ACCEPT
 -A INPUT -j REJECT --reject-with icmp-host-prohibited
+
+## BEGIN: psad
 # psad 1
 -A INPUT ! -s 192.168.0.0/16 -m limit --limit 5/min --limit-burst 10 -j LOG
-# psad 2
-#-A INPUT ! -s 192.168.0.0/16 -j LOG
-#
--A INPUT -j DROP
-#
--A FORWARD -m state --state INVALID -j DROP
-# psad 1
 -A FORWARD ! -s 192.168.0.0/16 -m limit --limit 5/min --limit-burst 10 -j LOG
 # psad 2
+#-A INPUT ! -s 192.168.0.0/16 -j LOG
 #-A FORWARD ! -s 193.168.0.0/16 -j LOG
-#
+## END: psad
+
+# Drop all else
+-A INPUT -j DROP
+
 -A OUTPUT -s 10.9.27.250/32 -p tcp -m tcp --sport 22 -j ACCEPT
 -A OUTPUT -m state --state INVALID -j REJECT --reject-with icmp-port-unreachable
 ## BEGIN: fail2ban
