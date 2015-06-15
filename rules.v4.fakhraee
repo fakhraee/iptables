@@ -32,41 +32,63 @@ COMMIT
 :fail2ban-SSH - [0:0]
 :fail2ban-ssh - [0:0]
 
-## BEGIN: Some general dropping
+
+# Some general dropping
 -A INPUT -m state --state INVALID -j DROP
 -A INPUT -p tcp -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -m state --state NEW -j DROP
 -A INPUT -f -j DROP
 -A INPUT -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,SYN,RST,PSH,ACK,URG -j DROP
 -A INPUT -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG NONE -j DROP
-## END: Some general dropping
 
-# BEGIN: Blacklist
+# Blacklist
 -A INPUT -s 93.174.93.0/24 -j DROP
 -A INPUT -s 184.105.139.0/24 -j DROP
 -A INPUT -s 61.240.144.0/24 -j DROP
 -A INPUT -s 222.66.55.0/24 -j DROP
 -A INPUT -s 104.233.142.0/24 -j DROP
 -A INPUT -s 198.148.96.0/19 -j DROP
+-A INPUT -s 198.52.96.0/19 -j DROP
+-A INPUT -s 104.255.64.0/21 -j DROP
+-A INPUT -s 108.171.192.0/19 -j DROP
+-A INPUT -s 94.102.51.0/24 -j DROP
+-A INPUT -s 134.145.0.0/16 -j DROP
+-A INPUT -s 134.146.0.0/15 -j DROP
 -A INPUT -m iprange --src-range 222.184.0.0-222.191.255.255 -j DROP
-# END: Blacklist
+-A INPUT -m iprange --src-range 222.204.0.0-222.204.63.255 -j DROP
+-A INPUT -m iprange --src-range 61.160.0.0-61.160.255.255 -j DROP
+-A INPUT -m iprange --src-range 218.77.64.0-218.77.79.255 -j DROP
+-A INPUT -m iprange --src-range 212.7.192.0-212.7.223.255 -j DROP
+-A INPUT -m iprange --src-range 113.96.0.0-113.111.255.255 -j DROP
+-A INPUT -m iprange --src-range 1.188.0.0-1.191.255.255 -j DROP
+-A INPUT -m iprange --src-range 91.121.64.0-91.121.127.255 -j DROP
+-A INPUT -m iprange --src-range 61.147.0.0-61.147.255.255 -j DROP
+-A INPUT -m iprange --src-range 5.160.96.0-5.160.127.255 -j DROP
+-A INPUT -m iprange --src-range 198.27.64.0-198.27.127.255 -j DROP
+-A INPUT -m iprange --src-range 60.166.0.0-60.175.255.255 -j DROP
+-A INPUT -m iprange --src-range 78.187.137.0-78.187.147.255 -j DROP
+-A INPUT -m iprange --src-range 60.166.0.0-60.175.255.255 -j DROP
+-A INPUT -m iprange --src-range 118.160.0.0-118.167.255.255 -j DROP
 
-## BEGIN: The door
-# Free all
-#-A INPUT -j ACCEPT
-# Iface and Proto
--A INPUT -i lo -j ACCEPT
--A INPUT -p icmp -j ACCEPT
-# IP
+# DNS bad string
+-A INPUT -p udp -m udp --dport 53 -m string --string "com" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "mren8" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "mrcp8" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "xinleduo" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "cp361" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "example" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "227x" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "taohuazu" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "77777av" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "facebook" --algo kmp --to 65535 -j DROP
+
+# Open the gate 
 -A INPUT -s 10.9.27.0/24 -j ACCEPT
 -A INPUT -s 172.16.16.0/24 -j ACCEPT
 -A INPUT -s 10.56.212.0/24 -j ACCEPT
--A INPUT -s 178.236.34.177/28 -j ACCEPT
--A INPUT -s 178.236.32.177/28 -j ACCEPT
+-A INPUT -m iprange --src-range 178.236.32.0-178.236.39.255 -j ACCEPT
 -A INPUT -d 178.236.32.182 -j ACCEPT
 -A INPUT -s 8.8.8.8 -j ACCEPT
 -A INPUT -s 208.67.222.222 -j ACCEPT
--A INPUT -s 178.236.32.177/28 -j ACCEPT
-# UDP & Port
 -A INPUT -p udp -m udp --dport 123 -j ACCEPT
 -A INPUT -p udp -m udp --dport 161 -j ACCEPT
 -A INPUT -p udp -m udp --dport 162 -j ACCEPT
@@ -74,7 +96,6 @@ COMMIT
 -A INPUT -p udp -m udp --dport 4569 -j ACCEPT
 -A INPUT -p udp -m udp --dport 5060:5062 -j ACCEPT
 -A INPUT -p udp -m udp --dport 10000:20000 -j ACCEPT
-#
 -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 #-A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
@@ -87,32 +108,20 @@ COMMIT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 9103 -j ACCEPT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 10050 -j ACCEPT
 #-A INPUT -s 10.9.27.240/28 -p tcp -m state --state NEW -m tcp --dport 25 -j ACCEPT
-#-A INPUT -s 178.236.34.176/28 -p tcp -m state --state NEW -m tcp --dport 25 -j ACCEPT
-## END: The door
 
-## BEGIN: TCP
-# Blacklist
-## END: TCP
-
-## BEGIN: UDP
-# DNS bad string
--A INPUT -p udp -m udp --dport 53 -m string --string "com" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "mren8" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "mrcp8" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "xinleduo" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "cp361" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "example" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "227x" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "taohuazu" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "77777av" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "facebook" --algo kmp --to 65535 -j DROP
-# DNS IP whitelist 
 # DNS name whitelist
 -A INPUT -p udp -m udp --dport 53 -m string --string "10d" --algo kmp --to 65535 -j ACCEPT
 -A INPUT -p udp -m udp --dport 53 -m string --string "dahdi" --algo kmp --to 65535 -j ACCEPT
-#
--A INPUT -p udp -m udp --dport 53 -j DROP
-## END UDP
+
+# Iface and Proto
+-A INPUT -i lo -j ACCEPT
+-A INPUT -p icmp -j ACCEPT
+
+## psad
+-A INPUT ! -s 192.168.0.0/16 -m limit --limit 5/min --limit-burst 10 -j LOG
+-A FORWARD ! -s 192.168.0.0/16 -m limit --limit 5/min --limit-burst 10 -j LOG
+#-A INPUT ! -s 192.168.0.0/16 -j LOG
+#-A FORWARD ! -s 192.168.0.0/16 -j LOG
 
 # fail2ban
 -A INPUT -p tcp -m tcp --dport 22 -j fail2ban-SSH
@@ -120,21 +129,15 @@ COMMIT
 #
 #-A INPUT -j REJECT --reject-with icmp-host-prohibited
 
-## BEGIN: psad
-# psad 1
--A INPUT ! -s 192.168.0.0/16 -m limit --limit 5/min --limit-burst 10 -j LOG
--A FORWARD ! -s 192.168.0.0/16 -m limit --limit 5/min --limit-burst 10 -j LOG
-# psad 2
-#-A INPUT ! -s 192.168.0.0/16 -j LOG
-#-A FORWARD ! -s 192.168.0.0/16 -j LOG
-## END: psad
-
 # Drop all else
--A INPUT -j DROP
+-A INPUT ! -i lo -j DROP
+
+
 
 -A OUTPUT -s 10.9.27.250/32 -p tcp -m tcp --sport 22 -j ACCEPT
 -A OUTPUT -m state --state INVALID -j REJECT --reject-with icmp-port-unreachable
-## BEGIN: fail2ban
+
+# fail2ban
 -A fail2ban-SSH -j RETURN
 -A fail2ban-ssh -s 101.227.249.242/32 -j DROP
 -A fail2ban-ssh -s 43.229.52.166/32 -j DROP
