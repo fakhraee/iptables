@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+iptables -F && iptables -X && iptables -t nat -F && iptables -t nat -X && iptables -L && sleep $1 && iptables-restore < /etc/iptables/rules.v4.fakhraee
