@@ -97,15 +97,24 @@ COMMIT
 -A INPUT -m iprange --src-range 39.64.0.0-39.95.255.255 -j DROP
 -A INPUT -m iprange --src-range 60.190.203.0-60.190.203.255 -j DROP
 
+# DNS bad string
+-A INPUT -p udp -m udp --dport 53 -m string --string "com" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "mren8" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "mrcp8" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "xinleduo" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "cp361" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "example" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "227x" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "taohuazu" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "77777av" --algo kmp --to 65535 -j DROP
+-A INPUT -p udp -m udp --dport 53 -m string --string "facebook" --algo kmp --to 65535 -j DROP
+
 # Open the gate 
 -A INPUT -s 10.9.27.0/24 -j ACCEPT
 -A INPUT -s 172.16.16.0/24 -j ACCEPT
 -A INPUT -s 10.56.212.0/24 -j ACCEPT
--A INPUT -s 192.168.34.0/24 -j ACCEPT
--A INPUT -s 192.168.40.0/24 -j ACCEPT
 -A INPUT -m iprange --src-range 178.236.32.0-178.236.39.255 -j ACCEPT
 -A INPUT -d 178.236.32.182 -j ACCEPT
--A INPUT -d 192.168.34.32 -j ACCEPT
 -A INPUT -s 8.8.8.8 -j ACCEPT
 -A INPUT -s 208.67.222.222 -j ACCEPT
 -A INPUT -p udp -m udp --dport 123 -j ACCEPT
@@ -135,18 +144,6 @@ COMMIT
 # Iface and Proto
 -A INPUT -i lo -j ACCEPT
 -A INPUT -p icmp -j ACCEPT
-
-# DNS bad string
--A INPUT -p udp -m udp --dport 53 -m string --string "com" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "mren8" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "mrcp8" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "xinleduo" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "cp361" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "example" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "227x" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "taohuazu" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "77777av" --algo kmp --to 65535 -j DROP
--A INPUT -p udp -m udp --dport 53 -m string --string "facebook" --algo kmp --to 65535 -j DROP
 
 ## psad
 -A INPUT ! -s 192.168.0.0/16 -m limit --limit 5/min --limit-burst 10 -j LOG
