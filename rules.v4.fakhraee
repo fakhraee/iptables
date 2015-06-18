@@ -88,6 +88,8 @@ COMMIT
 -A INPUT -s 192.3.183.0/24 -j DROP
 -A INPUT -s 204.124.180.0/24 -j DROP
 -A INPUT -s 183.131.144.0/24 -j DROP
+-A INPUT -s 169.54.233.0/24 -j DROP
+-A INPUT -s 59.188.20.0/24 -j DROP
 -A INPUT -m iprange --src-range 222.184.0.0-222.191.255.255 -j DROP
 -A INPUT -m iprange --src-range 59.48.0.0-59.49.127.255 -j DROP
 -A INPUT -m iprange --src-range 173.242.112.0-173.242.127.255 -j DROP
@@ -135,6 +137,7 @@ COMMIT
 -A INPUT -m iprange --src-range 117.21.0.0-117.21.255.255 -j DROP
 -A INPUT -m iprange --src-range 39.64.0.0-39.95.255.255 -j DROP
 -A INPUT -m iprange --src-range 60.190.203.0-60.190.203.255 -j DROP
+-A INPUT -m iprange --src-range 112.78.0.0-112.78.15.255 -j DROP
 
 # Open the gate 
 -A INPUT -s 10.9.27.0/24 -j ACCEPT
