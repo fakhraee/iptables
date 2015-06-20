@@ -118,6 +118,7 @@ COMMIT
 -A INPUT -s 104.149.0.0/16 -j DROP
 -A INPUT -s 91.205.173.0/24 -j DROP
 -A INPUT -s 77.221.220.0/24 -j DROP
+-A INPUT -s 94.102.52.0/24 -j DROP
 -A INPUT -m iprange --src-range 222.184.0.0-222.191.255.255 -j DROP
 -A INPUT -m iprange --src-range 82.207.0.0-82.207.63.255 -j DROP
 -A INPUT -m iprange --src-range 216.99.144.0-216.99.159.255 -j DROP
@@ -183,6 +184,7 @@ COMMIT
 -A INPUT -m iprange --src-range 178.236.32.0-178.236.39.255 -j ACCEPT
 -A INPUT -s 8.8.8.8 -j ACCEPT
 -A INPUT -s 208.67.222.222 -j ACCEPT
+-A INPUT -d 224.0.0.1 -j ACCEPT
 -A INPUT -p udp -m udp --dport 123 -j ACCEPT
 -A INPUT -p udp -m udp --dport 161 -j ACCEPT
 -A INPUT -p udp -m udp --dport 162 -j ACCEPT
