@@ -120,6 +120,7 @@ COMMIT
 -A INPUT -s 77.221.220.0/24 -j DROP
 -A INPUT -s 94.102.52.0/24 -j DROP
 -A INPUT -m iprange --src-range 222.184.0.0-222.191.255.255 -j DROP
+-A INPUT -m iprange --src-range 111.192.0.0-111.207.255.255 -j DROP
 -A INPUT -m iprange --src-range 82.207.0.0-82.207.63.255 -j DROP
 -A INPUT -m iprange --src-range 216.99.144.0-216.99.159.255 -j DROP
 -A INPUT -m iprange --src-range 210.14.128.0-210.14.143.255 -j DROP
