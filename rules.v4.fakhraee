@@ -138,7 +138,10 @@ COMMIT
 -A INPUT -s 1.204.56.0/24 -j DROP
 -A INPUT -s 202.162.78.0/24 -j DROP
 -A INPUT -s 61.16.232.0/24 -j DROP
+-A INPUT -s 110.80.20.0/24 -j DROP
+-A INPUT -s 180.141.88.0/24 -j DROP
 -A INPUT -m iprange --src-range 222.184.0.0-222.191.255.255 -j DROP
+-A INPUT -m iprange --src-range 180.136.0.0-180.143.255.255 -j DROP
 -A INPUT -m iprange --src-range 198.55.96.0-198.55.127.255 -j DROP
 -A INPUT -m iprange --src-range 212.253.80.0-212.253.83.255 -j DROP
 -A INPUT -m iprange --src-range 61.178.59.0-61.178.63.255 -j DROP
@@ -251,9 +254,7 @@ COMMIT
 
 ## psad
 -A INPUT ! -s 192.168.0.0/16 -m limit --limit 5/min --limit-burst 10 -j LOG
--A FORWARD ! -s 192.168.0.0/16 -m limit --limit 5/min --limit-burst 10 -j LOG
 #-A INPUT ! -s 192.168.0.0/16 -j LOG
-#-A FORWARD ! -s 192.168.0.0/16 -j LOG
 
 # fail2ban
 -A INPUT -p tcp -m tcp --dport 22 -j fail2ban-SSH
@@ -264,6 +265,11 @@ COMMIT
 # Drop all else
 -A INPUT ! -i lo -j DROP
 
+# psad
+-A FORWARD ! -s 192.168.0.0/16 -m limit --limit 5/min --limit-burst 10 -j LOG
+#-A FORWARD ! -s 192.168.0.0/16 -j LOG
+-A FORWARD -s 172.16.16.1 -j ACCEPT
+-A FORWARD -d 192.168.34.200 -j ACCEPT
 
 
 -A OUTPUT -o lo -j ACCEPT
