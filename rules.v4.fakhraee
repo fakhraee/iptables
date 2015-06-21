@@ -1,39 +1,13 @@
-# NAT
-*nat
-:PREROUTING ACCEPT [42711:2829986]
-:INPUT ACCEPT [21263:1333953]
-:OUTPUT ACCEPT [1302:92146]
-:POSTROUTING ACCEPT [3238:200327]
--A PREROUTING -i eth0 -p tcp -m tcp --dport 1122 -j DNAT --to-destination 192.168.34.11:22
--A PREROUTING -i eth0 -p tcp -m tcp --dport 2022 -j DNAT --to-destination 192.168.34.20:22
--A PREROUTING -i eth0 -p tcp -m tcp --dport 2122 -j DNAT --to-destination 192.168.34.21:22
--A PREROUTING -i eth0 -p tcp -m tcp --dport 25422 -j DNAT --to-destination 192.168.34.254:22
--A PREROUTING -i eth0 -p tcp -m tcp --dport 19022 -j DNAT --to-destination 192.168.34.190:22
--A PREROUTING -i eth0 -p tcp -m tcp --dport 4422 -j DNAT --to-destination 192.168.34.44:22
--A PREROUTING -i eth0 -p tcp -m tcp --dport 18422 -j DNAT --to-destination 192.168.34.184:22
--A PREROUTING -i eth0 -p tcp -m tcp --dport 18522 -j DNAT --to-destination 192.168.34.185:22
--A PREROUTING -i eth0 -p tcp -m tcp --dport 16922 -j DNAT --to-destination 192.168.34.169:22
--A PREROUTING -i eth0 -p tcp -m tcp --dport 16822 -j DNAT --to-destination 192.168.34.168:22
--A PREROUTING -i eth0 -p tcp -m tcp --dport 16980 -j DNAT --to-destination 192.168.34.169:80
--A PREROUTING -i eth0 -p tcp -m tcp --dport 17022 -j DNAT --to-destination 192.168.34.170:22
--A PREROUTING -i eth0 -p tcp -m tcp --dport 17122 -j DNAT --to-destination 192.168.34.171:22
--A PREROUTING -i eth0 -p tcp -m tcp --dport 17222 -j DNAT --to-destination 192.168.34.172:22
--A PREROUTING -i eth0 -p tcp -m tcp --dport 17280 -j DNAT --to-destination 192.168.34.172:8080
--A PREROUTING -i eth0 -p tcp -m tcp --dport 17281 -j DNAT --to-destination 192.168.34.172:8000
--A PREROUTING -i eth0 -p tcp -m tcp --dport 17180 -j DNAT --to-destination 192.168.34.171:8080
--A PREROUTING -i eth0 -p tcp -m tcp --dport 17822 -j DNAT --to-destination 192.168.34.178:22
--A POSTROUTING -o eth0 -j MASQUERADE
-COMMIT
 # FILTER
 *filter
-:INPUT ACCEPT [0:0]
-:FORWARD ACCEPT [326273:122478066]
-:OUTPUT ACCEPT [221525:118751913]
+:INPUT DROP [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
 :fail2ban-SSH - [0:0]
 :fail2ban-ssh - [0:0]
 
-
 # Some general dropping
+-A INPUT -m state --state INVALID -j LOG --log-prefix "DROP INVALID " --log-ip-options --log-tcp-options
 -A INPUT -m state --state INVALID -j DROP
 -A INPUT -p tcp -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -m state --state NEW -j DROP
 -A INPUT -f -j DROP
@@ -205,6 +179,7 @@ COMMIT
 -A INPUT -m iprange --src-range 112.78.0.0-112.78.15.255 -j DROP
 
 # Open the gate 
+-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT 
 -A INPUT -s 10.9.27.0/24 -j ACCEPT
 -A INPUT -s 172.16.16.0/24 -j ACCEPT
 -A INPUT -s 10.56.212.0/24 -j ACCEPT
@@ -221,7 +196,6 @@ COMMIT
 -A INPUT -p udp -m udp --dport 4569 -j ACCEPT
 -A INPUT -p udp -m udp --dport 5060:5062 -j ACCEPT
 -A INPUT -p udp -m udp --dport 10000:20000 -j ACCEPT
--A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 #-A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT
@@ -267,16 +241,20 @@ COMMIT
 # Drop all else
 -A INPUT ! -i lo -j DROP
 
+-A FORWARD -m state --state INVALID -j LOG --log-prefix "DROP INVALID " --log-ip-options --log-tcp-options
+-A FORWARD -m state --state INVALID -j DROP
+-A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
 # psad
 -A FORWARD ! -s 192.168.0.0/16 -m limit --limit 5/min --limit-burst 10 -j LOG
 #-A FORWARD ! -s 192.168.0.0/16 -j LOG
 -A FORWARD -s 172.16.16.1 -j ACCEPT
 -A FORWARD -d 192.168.34.200 -j ACCEPT
 
-
 -A OUTPUT -o lo -j ACCEPT
+-A OUTPUT -m state --state INVALID -j LOG --log-prefix "DROP INVALID " --log-ip-options --log-tcp-options
+-A OUTPUT -m state --state INVALID -j DROP
+-A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 -A OUTPUT -s 10.9.27.250/32 -p tcp -m tcp --sport 22 -j ACCEPT
--A OUTPUT -m state --state INVALID -j REJECT --reject-with icmp-port-unreachable
 
 # fail2ban
 -A fail2ban-SSH -j RETURN
@@ -404,4 +382,31 @@ COMMIT
 -A fail2ban-ssh -s 43.229.52.158/32 -j DROP
 -A fail2ban-ssh -j RETURN
 ## END: fail2ban
+COMMIT
+
+# NAT
+*nat
+:PREROUTING ACCEPT [42711:2829986]
+:INPUT ACCEPT [21263:1333953]
+:OUTPUT ACCEPT [1302:92146]
+:POSTROUTING ACCEPT [3238:200327]
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 1122 -j DNAT --to-destination 192.168.34.11:22
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 2022 -j DNAT --to-destination 192.168.34.20:22
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 2122 -j DNAT --to-destination 192.168.34.21:22
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 25422 -j DNAT --to-destination 192.168.34.254:22
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 19022 -j DNAT --to-destination 192.168.34.190:22
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 4422 -j DNAT --to-destination 192.168.34.44:22
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 18422 -j DNAT --to-destination 192.168.34.184:22
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 18522 -j DNAT --to-destination 192.168.34.185:22
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 16922 -j DNAT --to-destination 192.168.34.169:22
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 16822 -j DNAT --to-destination 192.168.34.168:22
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 16980 -j DNAT --to-destination 192.168.34.169:80
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 17022 -j DNAT --to-destination 192.168.34.170:22
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 17122 -j DNAT --to-destination 192.168.34.171:22
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 17222 -j DNAT --to-destination 192.168.34.172:22
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 17280 -j DNAT --to-destination 192.168.34.172:8080
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 17281 -j DNAT --to-destination 192.168.34.172:8000
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 17180 -j DNAT --to-destination 192.168.34.171:8080
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 17822 -j DNAT --to-destination 192.168.34.178:22
+-A POSTROUTING -o eth0 -j MASQUERADE
 COMMIT
