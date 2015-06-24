@@ -1,2 +1,17 @@
 #!/usr/bin/env bash
-iptables -F && iptables -X && iptables -t nat -F && iptables -t nat -X && iptables -L && sleep $1 && iptables-restore < /etc/iptables/rules.v4.fakhraee
+
+iptables -F 
+iptables -X 
+iptables -t nat -F 
+iptables -t nat -X 
+iptables -L 
+iptables -P INPUT ACCEPT 
+
+secs=$(($1))
+while [ $secs -gt 0 ]; do
+   echo -ne "$secs\033[0K\r"
+   sleep 1
+   : $((secs--))
+done
+
+iptables-restore < /etc/iptables/rules.v4.fakhraee
