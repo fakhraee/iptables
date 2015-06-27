@@ -4,8 +4,10 @@ iptables -F
 iptables -X 
 iptables -t nat -F 
 iptables -t nat -X 
-iptables -L 
 iptables -P INPUT ACCEPT 
+iptables -P OUTPUT ACCEPT 
+iptables -P FORWARD ACCEPT 
+iptables -L 
 
 secs=$(($1))
 while [ $secs -gt 0 ]; do
