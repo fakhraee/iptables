@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+counter() {
+    secs=$(($1))
+    while [ $secs -gt 0 ]; do
+        echo -ne "$secs\033[0K\r"
+        sleep 1
+        : $((secs--))
+    done
+}
+
 iptables -F 
 iptables -X 
 iptables -t nat -F 
@@ -9,11 +18,7 @@ iptables -P OUTPUT ACCEPT
 iptables -P FORWARD ACCEPT 
 iptables -L 
 
-secs=$(($1))
-while [ $secs -gt 0 ]; do
-   echo -ne "$secs\033[0K\r"
-   sleep 1
-   : $((secs--))
-done
+[[ "$1" = "EVER" ]] && echo && echo "WARNING!!! Firewall disabled." && exit 0
+[[ -z "$2" ]] && counter "$1" || sleep "$1"
 
 iptables-restore < /etc/iptables/rules.v4.fakhraee
