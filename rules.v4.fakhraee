@@ -6,16 +6,7 @@
 #:fail2ban-SSH - [0:0]
 #:fail2ban-ssh - [0:0]
 
-# Some general dropping
--A INPUT -m state --state INVALID -j LOG --log-prefix "DROP INVALID " --log-ip-options --log-tcp-options
--A INPUT -m state --state INVALID -j DROP
--A INPUT -p tcp -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -m state --state NEW -j DROP
--A INPUT -f -j DROP
--A INPUT -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,SYN,RST,PSH,ACK,URG -j DROP
--A INPUT -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG NONE -j DROP
-
-# Blacklist
-# HongKong
+# Blacklist HongKong
 -A INPUT -s 1.32.192.0/18 -j DROP
 -A INPUT -s 1.36.0.0/16 -j DROP
 -A INPUT -s 1.64.0.0/15 -j DROP
@@ -7477,7 +7468,7 @@
 -A INPUT -s 103.249.73.8/29 -j DROP
 -A INPUT -s 103.249.73.16/28 -j DROP
 -A INPUT -s 103.249.73.32/27 -j DROP
-# China
+# Blacklist China
 -A INPUT -s 1.0.1.0/24 -j DROP
 -A INPUT -s 1.0.2.0/23 -j DROP
 -A INPUT -s 1.0.8.0/21 -j DROP
@@ -12316,6 +12307,108 @@
 -A INPUT -s 69.165.70.0/24 -j DROP
 -A INPUT -s 82.102.173.0/24 -j DROP
 -A INPUT -s 185.53.8.0/24 -j DROP
+-A INPUT -s 142.55.76.0/24 -j DROP
+-A INPUT -s 142.4.214.0/24 -j DROP
+-A INPUT -s 50.63.202.0/24 -j DROP
+-A INPUT -s 112.222.216.0/24 -j DROP
+-A INPUT -s 94.101.38.0/24 -j DROP
+-A INPUT -s 24.85.177.0/24 -j DROP
+-A INPUT -s 41.222.21.0/24 -j DROP
+-A INPUT -s 188.165.221.0/24 -j DROP
+-A INPUT -s 104.167.109.0/24 -j DROP
+-A INPUT -s 191.189.55.0/24 -j DROP
+-A INPUT -s 198.20.69.0/24 -j DROP
+-A INPUT -s 109.235.51.0/24 -j DROP
+-A INPUT -s 188.255.218.0/24 -j DROP
+-A INPUT -s 46.166.188.0/24 -j DROP
+-A INPUT -s 38.127.167.0/24 -j DROP
+-A INPUT -s 175.139.183.0/24 -j DROP
+-A INPUT -s 104.172.61.0/24 -j DROP
+-A INPUT -s 78.188.12.0/24 -j DROP
+-A INPUT -s 86.108.15.0/24 -j DROP
+-A INPUT -s 89.255.92.0/24 -j DROP
+-A INPUT -s 62.210.192.0/24 -j DROP
+-A INPUT -s 114.33.37.0/24 -j DROP
+-A INPUT -s 50.143.54.0/24 -j DROP
+-A INPUT -s 151.238.9.0/24 -j DROP
+-A INPUT -s 81.200.91.0/24 -j DROP
+-A INPUT -s 121.121.41.0/24 -j DROP
+-A INPUT -s 173.199.127.0/24 -j DROP
+-A INPUT -s 62.210.100.0/24 -j DROP
+-A INPUT -s 113.177.76.0/24 -j DROP
+-A INPUT -s 69.64.46.0/24 -j DROP
+-A INPUT -s 78.46.11.0/24 -j DROP
+-A INPUT -s 173.254.203.0/24 -j DROP
+-A INPUT -s 92.48.122.0/24 -j DROP
+-A INPUT -s 114.43.16.0/24 -j DROP
+-A INPUT -s 89.248.172.0/24 -j DROP
+-A INPUT -s 133.130.57.0/24 -j DROP
+-A INPUT -s 80.11.181.0/24 -j DROP
+-A INPUT -s 85.133.186.0/24 -j DROP
+-A INPUT -s 46.246.94.0/24 -j DROP
+-A INPUT -s 142.4.219.0/24 -j DROP
+-A INPUT -s 91.200.192.0/24 -j DROP
+-A INPUT -s 208.89.215.0/24 -j DROP
+-A INPUT -s 128.199.224.0/24 -j DROP
+-A INPUT -s 58.137.112.0/24 -j DROP
+-A INPUT -s 83.18.123.0/24 -j DROP
+-A INPUT -s 81.4.228.0/24 -j DROP
+-A INPUT -s 195.214.175.0/24 -j DROP
+-A INPUT -s 2.230.117.0/24 -j DROP
+-A INPUT -s 158.255.2.0/24 -j DROP
+-A INPUT -s 185.42.194.0/24 -j DROP
+-A INPUT -s 194.225.49.0/24 -j DROP
+-A INPUT -s 149.129.76.0/24 -j DROP
+-A INPUT -s 178.211.33.0/24 -j DROP
+-A INPUT -s 31.6.71.0/24 -j DROP
+-A INPUT -s 201.49.209.0/24 -j DROP
+-A INPUT -s 104.245.96.0/24 -j DROP
+-A INPUT -s 108.171.245.0/24 -j DROP
+-A INPUT -s 108.163.217.0/24 -j DROP
+-A INPUT -s 122.146.230.0/24 -j DROP
+-A INPUT -s 82.99.213.0/24 -j DROP
+-A INPUT -s 195.211.154.0/24 -j DROP
+-A INPUT -s 5.135.41.0/24 -j DROP
+-A INPUT -s 41.71.77.0/24 -j DROP
+-A INPUT -s 152.250.104.0/24 -j DROP
+-A INPUT -s 79.127.108.0/24 -j DROP
+-A INPUT -s 192.210.199.0/24 -j DROP
+-A INPUT -s 59.12.20.0/24 -j DROP
+-A INPUT -s 176.31.16.0/24 -j DROP
+-A INPUT -s 188.165.210.0/24 -j DROP
+-A INPUT -s 37.187.252.0/24 -j DROP
+-A INPUT -s 190.122.131.0/24 -j DROP
+-A INPUT -s 186.116.6.0/24 -j DROP
+-A INPUT -s 178.161.128.0/24 -j DROP
+-A INPUT -s 41.159.136.0/24 -j DROP
+-A INPUT -s 212.120.245.0/24 -j DROP
+-A INPUT -s 85.99.254.0/24 -j DROP
+-A INPUT -s 94.102.60.0/24 -j DROP
+-A INPUT -s 176.57.173.0/24 -j DROP
+-A INPUT -s 151.80.99.0/24 -j DROP
+-A INPUT -s 94.190.41.0/24 -j DROP
+-A INPUT -s 46.23.198.0/24 -j DROP
+-A INPUT -s 198.46.141.0/24 -j DROP
+-A INPUT -s 198.20.70.0/24 -j DROP
+-A INPUT -s 162.212.105.0/24 -j DROP
+-A INPUT -s 177.54.107.0/24 -j DROP
+-A INPUT -s 210.186.58.0/24 -j DROP
+-A INPUT -s 94.183.242.0/24 -j DROP
+-A INPUT -s 119.81.124.0/24 -j DROP
+-A INPUT -s 58.228.105.0/24 -j DROP
+-A INPUT -s 69.64.58.0/24 -j DROP
+-A INPUT -s 81.149.8.0/24 -j DROP
+-A INPUT -s 61.26.82.0/24 -j DROP
+-A INPUT -s 187.19.124.0/24 -j DROP
+-A INPUT -s 195.159.180.0/24 -j DROP
+-A INPUT -s 23.252.118.0/24 -j DROP
+-A INPUT -s 200.158.57.0/24 -j DROP
+-A INPUT -s 104.247.217.0/24 -j DROP
+-A INPUT -s 89.105.197.0/24 -j DROP
+-A INPUT -s 94.156.122.0/24 -j DROP
+-A INPUT -s 74.82.47.0/24 -j DROP
+-A INPUT -s 85.17.141.0/24 -j DROP
+-A INPUT -s 93.158.213.0/24 -j DROP
 # Come HERE editor!
 -A INPUT -m iprange --src-range 60.0.0.0-60.10.255.255 -j DROP
 -A INPUT -m iprange --src-range 199.168.96.0-199.168.103.255 -j DROP
@@ -12390,18 +12483,25 @@
 -A INPUT -m iprange --src-range 39.64.0.0-39.95.255.255 -j DROP
 -A INPUT -m iprange --src-range 60.190.203.0-60.190.203.255 -j DROP
 -A INPUT -m iprange --src-range 112.78.0.0-112.78.15.255 -j DROP
-
+# Some general dropping
+-A INPUT -m state --state INVALID -j LOG --log-prefix "INPUT: DROP INVALID " --log-ip-options --log-tcp-options
+-A INPUT -m state --state INVALID -j DROP
+-A INPUT -p tcp -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -m state --state NEW -j DROP
+-A INPUT -f -j DROP
+-A INPUT -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,SYN,RST,PSH,ACK,URG -j DROP
+-A INPUT -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG NONE -j DROP
 # Open the gate 
 -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 -A INPUT -i lo -j ACCEPT
--A INPUT -s 10.9.27.250 -j ACCEPT
--A INPUT -s 10.9.27.246 -j ACCEPT
--A INPUT -s 10.56.212.0/24 -j ACCEPT
--A INPUT -s 192.168.34.0/24 -p tcp ! --dport 47340 -j ACCEPT
--A INPUT -s 172.16.16.199 -p tcp --dport 667 -j ACCEPT
--A INPUT -s 172.16.16.13 -j ACCEPT
+-A INPUT -s 192.168.34.0/24 -j ACCEPT
 -A INPUT -s 192.168.40.0/24 -j ACCEPT
 -A INPUT -s 192.168.200.40 -j ACCEPT
+-A INPUT -s 10.9.27.226 -j ACCEPT
+-A INPUT -s 10.9.27.246 -j ACCEPT
+-A INPUT -s 10.9.27.250 -j ACCEPT
+-A INPUT -s 10.56.212.0/24 -j ACCEPT
+-A INPUT -s 172.16.16.199 -j ACCEPT
+-A INPUT -s 172.16.16.13 -j ACCEPT
 -A INPUT -s 178.236.32.0/24 -j ACCEPT
 -A INPUT -s 178.236.34.0/24 -j ACCEPT
 -A INPUT -s 8.8.8.8 -j ACCEPT
@@ -12428,55 +12528,67 @@
 #-A INPUT -p tcp -m state --state NEW -m tcp --dport 9103 -j ACCEPT
 #-A INPUT -p tcp -m state --state NEW -m tcp --dport 10050 -j ACCEPT
 #-A INPUT -s 10.9.27.240/28 -p tcp -m state --state NEW -m tcp --dport 25 -j ACCEPT
-
 # DNS name whitelist
 -A INPUT -p udp -m udp --dport 53 -m string --string "10d" --algo kmp --to 65535 -j ACCEPT
 #-A INPUT -p udp -m udp --dport 53 -m string --string "dahdi" --algo kmp --to 65535 -j ACCEPT
-
 # Iface and Proto
 -A INPUT -i lo -j ACCEPT
 -A INPUT -p icmp -j ACCEPT
-
 # DNS bad string
 -A INPUT -p udp -m udp --dport 53 -m string --string "com" --algo kmp --to 65535 -j DROP
-
-## psad
--A INPUT ! -s 192.168.0.0/16 -m limit --limit 5/min --limit-burst 10 -j LOG
-#-A INPUT ! -s 192.168.0.0/16 -j LOG
-
+# LOG 
+#-A INPUT ! -s 192.168.0.0/16 -m limit --limit 5/min --limit-burst 10 -j LOG --log-prefix "INPUT: DROPPED"
+-A INPUT -j LOG --log-prefix "INPUT: DROPPED "
+# Drop all else
+-A INPUT -j DROP
 # fail2ban
 #-A INPUT -p tcp -m tcp --dport 22 -j fail2ban-SSH
 #-A INPUT -p tcp -m multiport --dports 22 -j fail2ban-ssh
-#
 #-A INPUT -j REJECT --reject-with icmp-host-prohibited
 
-# Drop all else
--A INPUT -j DROP
-
--A FORWARD -m state --state INVALID -j LOG --log-prefix "DROP INVALID " --log-ip-options --log-tcp-options
+-A FORWARD -m state --state INVALID -j LOG --log-prefix "FORWARD: DROP INVALID " --log-ip-options --log-tcp-options
 -A FORWARD -m state --state INVALID -j DROP
 # SYN Floods (echo 1 > /proc/sys/net/ipv4/tcp_syncookies)
 -A FORWARD -p tcp --syn -m limit --limit 1/s -j ACCEPT 
 -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
-# psad
--A FORWARD ! -s 192.168.0.0/16 -m limit --limit 5/min --limit-burst 10 -j LOG
 -A FORWARD -d 192.168.0.0/16 -j ACCEPT
--A FORWARD -j LOG --log-prefix "FORWARD DROPPED" 
+-A FORWARD -d 178.236.32.177/28 -j ACCEPT
+-A FORWARD -d 178.236.34.177/28 -j ACCEPT
+# LOG 
+#-A FORWARD ! -s 192.168.0.0/16 -m limit --limit 5/min --limit-burst 10 -j LOG
+-A FORWARD -j LOG --log-prefix "FORWARD: DROPPED " 
 -A FORWARD -j DROP
 
+-A OUTPUT -m state --state INVALID -j LOG --log-prefix "OUTPUT: DROP INVALID " --log-ip-options --log-tcp-options
+-A OUTPUT -m state --state INVALID -j DROP
 -A OUTPUT -p icmp -j ACCEPT
 -A OUTPUT -o lo -j ACCEPT
--A OUTPUT -m state --state INVALID -j LOG --log-prefix "DROP INVALID " --log-ip-options --log-tcp-options
--A OUTPUT -m state --state INVALID -j DROP
 -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
--A OUTPUT -d 192.168.0.0/16 -j ACCEPT
+-A OUTPUT -d 192.168.34.0/24 -j ACCEPT
+-A OUTPUT -d 192.168.40.0/24 -j ACCEPT
+-A OUTPUT -d 192.168.200.0/24 -j ACCEPT
 -A OUTPUT -d 178.236.32.177/28 -j ACCEPT
 -A OUTPUT -d 178.236.34.177/28 -j ACCEPT
 -A OUTPUT -d 10.9.27.0/24 -j ACCEPT
 -A OUTPUT -d 10.56.212.0/24 -j ACCEPT
+# Web
+-A OUTPUT -p tcp -m tcp --dport 80 -j ACCEPT
+# DNS
 -A OUTPUT -d 8.8.8.8 -j ACCEPT
 -A OUTPUT -d 208.67.222.222 -j ACCEPT
--A OUTPUT -j LOG --log-prefix "OUTPUT DROPPED"
+-A OUTPUT -d 4.2.2.4 -j ACCEPT
+# whois
+-A OUTPUT -p tcp -m tcp --dport 43 -j ACCEPT
+# NTP
+-A OUTPUT -p udp -m udp --dport 123 -j ACCEPT
+#-A OUTPUT -d 199.71.0.46 -p tcp -m tcp --dport 43 -j ACCEPT
+#-A OUTPUT -d 199.71.0.47 -p tcp -m tcp --dport 43 -j ACCEPT
+#-A OUTPUT -d 199.71.0.48 -p tcp -m tcp --dport 43 -j ACCEPT
+#-A OUTPUT -d 199.212.0.46 -p tcp -m tcp --dport 43 -j ACCEPT
+#-A OUTPUT -d 199.212.0.47 -p tcp -m tcp --dport 43 -j ACCEPT
+#-A OUTPUT -d 199.212.0.48 -p tcp -m tcp --dport 43 -j ACCEPT
+#-A OUTPUT -d 23.239.6.76 -p tcp -m tcp --dport 43 -j ACCEPT
+-A OUTPUT -j LOG --log-prefix "OUTPUT: DROPPED "
 -A OUTPUT -j DROP
 COMMIT
 
