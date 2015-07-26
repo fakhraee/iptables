@@ -12652,6 +12652,7 @@
 -A INPUT -s 217.160.206.0/24 -j DROP
 -A INPUT -s 173.199.65.0/24 -j DROP
 -A INPUT -s 46.101.19.0/24 -j DROP
+-A INPUT -s 185.61.136.0/24 -j DROP
 # Come HERE editor!
 -A INPUT -m iprange --src-range 78.93.51.0-78.93.60.255 -j DROP
 -A INPUT -m iprange --src-range 60.0.0.0-60.10.255.255 -j DROP
