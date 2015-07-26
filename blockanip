@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 RULES="/etc/iptables/rules.v4.fakhraee"
-IP="$1"
+[[ -z "$1" ]] && exit 0 || IP="$1"
 [[ -z "$2" ]] && SIMU=0 || SIMU=1
 
 IFS=.
