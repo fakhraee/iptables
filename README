@@ -1,7 +1,8 @@
 ## Howto
 1. Make a backup of current rules using 'iptables-save > rules.v4.orig'
-2. run bin/make
-3. 'iptables-restore < rules.v4'
+2. Change following files: grep -R _host_ . 
+3. run bin/make
+4. 'iptables-restore < rules.v4'
 
 ## TODO
 1. We currently have no respect for fail2ban. Is there anyway that we can just change our own part?

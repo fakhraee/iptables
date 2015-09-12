@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 [[ -z "$1" ]] && echo "No server name given" && exit 1
-RULES="/etc/iptables/gw1-msh/filter/input/input-drop"
+RULES="/etc/iptables/_host_/filter/input/input-drop"
 [[ -z "$1" ]] && exit 0 || IP="$1"
 [[ -z "$2" ]] && SIMU=0 || SIMU=1
 
