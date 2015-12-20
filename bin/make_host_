@@ -6,13 +6,18 @@ VROOT="$(pwd)"
 cd "$VROOT/_host_"
 
 bypass() {
-	while IFS='' read -r line || [[ -n "$line" ]]; do
-		echo "# bypass" >> $VFILTER
-		echo "-A INPUT -s "$line" -j ACCEPT" >> $VFILTER
-		echo "-A OUTPUT -d "$line" -j ACCEPT" >> $VFILTER
-		echo >> $VFILTER
-		echo "$line bypassed"
-	done < "filter/bypass"
+	echo "# Bypass" >> $VFILTER
+	echo "Bypassed: "
+	grep -v '^#' "filter/bypass" | while IFS='' read -r line || [[ -n "$line" ]]; do
+		if [[ "$line" == -* ]]; then
+			echo "$line" >> $VFILTER
+		else 
+			echo "-A INPUT -s "$line" -j ACCEPT" >> $VFILTER
+			echo "-A OUTPUT -d "$line" -j ACCEPT" >> $VFILTER
+		fi
+		echo "$line"
+	done
+	echo >> $VFILTER
 }
 
 VFILTER=$VROOT/rules.v4.filter
